@@ -1,7 +1,9 @@
 <?php
 
 namespace Controller;
-    
+use Application\CustomResponse\JsonCustomResponse;
+use Silex\Application;
+
 /**
  * Description of ControllerBase
  *
@@ -11,7 +13,7 @@ class ControllerBase
 {
     /**
      *
-     * @var \Pimple\Container
+     * @var Application
      */
     protected $_app;
     
@@ -28,13 +30,19 @@ class ControllerBase
     protected $_em;
 
 
-    public function __construct(\Pimple\Container $app) {
+    public function __construct(Application $app) {
         $this->_app = $app;
         $this->_em = $app['em'];
     }
     
-    public function setRepository(string $repo)
+    public function setRepository($repo)
     {
         $this->_repo = $this->_em->getRepository($repo);
+    }
+
+    public function jsonResponse(array $body, $message = null, $status = JsonCustomResponse::STATUS_OK)
+    {
+        $response = new JsonCustomResponse($body,$message,$status);
+        return $response;
     }
 }

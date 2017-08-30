@@ -2,5 +2,10 @@ doctrine:
     orm:
         metadata_entity_annotation: 'src/Data/Entity'
         entity_namesapace: 'Data\Entity'
+application:
+    controller: 'src/Controller'
+    controller_namespace: 'Controller'
+    routes_file: 'config/routes.yml'
+
     
     

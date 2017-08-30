@@ -1,0 +1,21 @@
+routes:
+    home_page:
+        method: 'GET'
+        path_uri: '/'
+        action: 'controller.home:index'
+
+routes_grouped:
+    usuario:
+        prefix: '/usuario'
+        routes:
+            home_page:
+                method: 'GET'
+                path_uri: ''
+                action: 'controller.home:json'
+    prospecto:
+        prefix: '/prospecto'
+        routes:
+            home_page:
+                method: 'GET'
+                path_uri: ''
+                action: 'controller.prospect:getAll'

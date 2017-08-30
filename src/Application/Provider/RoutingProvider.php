@@ -1,6 +1,8 @@
 <?php
 
 namespace Application\Provider;
+use Application\Commom\ConfigApplication;
+use Silex\Application;
 
 /**
  * Description of RoutingProvider
@@ -12,15 +14,17 @@ class RoutingProvider implements \Pimple\ServiceProviderInterface
     
     public function register(\Pimple\Container $app) 
     {
-        $this->registerServices($app);
-        
+        $this->registerRoutesFromFile($app);
+
+        //$app->get('/',function () { return 'lol'; });
+
         $this->CrudRoutes($app, 'controller.post', "/post");
         $this->CrudRoutes($app, 'controller.comentario', "/comentario");
         
         $app->get('/comentario/post/{postId}','controller.comentario:getAllByPost');
     }
     
-    public function CrudRoutes(\Pimple\Container $app , string $controller, string $prefix)
+    public function CrudRoutes(\Pimple\Container $app , $controller, $prefix)
     {
         $app->get($prefix.'/{id}',$controller.':get');
         $app->get($prefix , $controller.':getAll');
@@ -28,22 +32,33 @@ class RoutingProvider implements \Pimple\ServiceProviderInterface
         $app->put($prefix, $controller.':update');
         $app->delete($prefix, $controller.':delete');
     }
-    
-    public function registerServices(\Pimple\Container $app)
+
+
+    public function registerRoutesFromFile(Application $app)
     {
-        
-        $app['controller.post'] = function () use($app)
+        $routes = ConfigApplication::getRoutesArray();
+
+        foreach ($routes['routes'] as $key => $val)
         {
-            return new \Controller\PostController($app);
-        };
-        
-        $app['controller.comentario'] = function() use($app)
+            $app->match($val['path_uri'],$val['action'])
+                ->method($val['method'])
+                ->bind($key);
+        }
+
+        foreach ($routes['routes_grouped'] as $key => $val)
         {
-            return new \Controller\ComentarioController($app);
-        };
-        
+            $prefix = $val['prefix'];
+            $name = $key;
+
+            foreach ($val['routes'] as $subkey => $subval)
+            {
+                $app->match($prefix.''.$subval['path_uri'], $subval['action'])
+                    ->method($subval['method'])
+                    ->bind($name.'_'.$subkey);
+            }
+        }
     }
-    
+
     
 
 }
