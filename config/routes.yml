@@ -3,10 +3,18 @@ routes:
         method: 'GET'
         path_uri: '/'
         action: 'controller.home:index'
-
+    sign-up:
+        method: 'POST'
+        path_uri: '/auth/sign-up'
+        action: 'controller.authenticate:auth'
+    refresh-token:
+        method: 'POST'
+        path_uri: '/auth/refresh-token'
+        action: 'controller.authenticate:refresh_token'
 routes_grouped:
     usuario:
         prefix: '/usuario'
+        security: true
         routes:
             home_page:
                 method: 'GET'

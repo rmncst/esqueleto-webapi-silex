@@ -78,4 +78,15 @@ class ConfigApplication
 
         return $output;
     }
+
+    public static function getPrivateKey()
+    {
+        return file_get_contents(self::getRootPathApp().'config/private.key');
+    }
+
+    public static function getPublicKey()
+    {
+        return file_get_contents(self::getRootPathApp().'config/public.key');
+    }
+
 }

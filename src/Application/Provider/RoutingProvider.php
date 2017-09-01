@@ -2,7 +2,9 @@
 
 namespace Application\Provider;
 use Application\Commom\ConfigApplication;
+use Middleware\SecurityMiddleware;
 use Silex\Application;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Description of RoutingProvider
@@ -54,6 +56,9 @@ class RoutingProvider implements \Pimple\ServiceProviderInterface
             {
                 $app->match($prefix.''.$subval['path_uri'], $subval['action'])
                     ->method($subval['method'])
+                    ->before(function (Request $request, Application $app){
+                        SecurityMiddleware::auth($request,$app);
+                    })
                     ->bind($name.'_'.$subkey);
             }
         }
