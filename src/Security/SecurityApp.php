@@ -46,9 +46,16 @@ class SecurityApp
     public static function encodeRefreshToken($jwt, array $data)
     {
         $token = self::decodeJasonWebToken($jwt);
-        $token['exp'] += 3 * self::TIME_EXP;
+        //print_r($token);
         $token['nbf'] = $token['exp'];
+        $token['exp'] += 3 * self::TIME_EXP;
         $token['iat'] = time();
+
+        $token['debug_iat'] = date(\DateTime::ISO8601,$token['iat']);
+        $token['debug_nbf'] = date(\DateTime::ISO8601,$token['nbf']);
+        $token['debug_exp'] = date(\DateTime::ISO8601,$token['exp']);
+
+        //print_r($token);
 
         return JWT::encode(array_merge($token,$data),self::REFRESH_KEY,self::REFRESH_ALGO);
     }
@@ -56,7 +63,6 @@ class SecurityApp
 
     public static function decodeJasonWebToken($token)
     {
-        JWT::$leeway = '60';
         $jwt = JWT::decode($token, ConfigApplication::getPublicKey(),[self::ALGO]);
         return (array) $jwt;
     }
@@ -76,6 +82,10 @@ class SecurityApp
             "nbf" => time(),
             "exp" => time() + self::TIME_EXP
         );
+
+        $token['debug_iat'] = date(\DateTime::ISO8601,$token['iat']);
+        $token['debug_nbf'] = date(\DateTime::ISO8601,$token['nbf']);
+        $token['debug_exp'] = date(\DateTime::ISO8601,$token['exp']);
 
         return $token;
     }
@@ -103,6 +113,8 @@ class SecurityApp
         }
         catch (\Exception $ex)
         {
+            print_r(PHP_EOL.'Message Exception: ');
+            print_r(PHP_EOL.$ex->getMessage());
             return false;
         }
     }

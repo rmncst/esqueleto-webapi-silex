@@ -66,7 +66,7 @@ class CustomResponseProvider implements ServiceProviderInterface
         });
 
         $app->error(function(\Exception $erro) use ($app){
-            $errorResponse = new JsonCustomResponse(['error_exception' => $erro->getMessage()],
+            $errorResponse = new JsonCustomResponse(['error_exception' => $erro->getMessage() ,'stack' => $erro->getTraceAsString()],
                 'Erro inesperado',
                 JsonCustomResponse::STATUS_ERROR);
 

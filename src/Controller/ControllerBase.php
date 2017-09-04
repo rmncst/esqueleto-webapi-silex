@@ -29,6 +29,8 @@ class ControllerBase
      */
     protected $_em;
 
+    const HEAD_ACCESS_TOKEN_NAME = 'Authorization';
+
 
     public function __construct(Application $app) {
         $this->_app = $app;

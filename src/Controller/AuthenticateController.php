@@ -12,6 +12,7 @@ namespace Controller;
 use Application\Exception\ExpiredAccessTokenException;
 use Application\Exception\FieldNotFoundException;
 use Application\Exception\InvalidTokenException;
+use Middleware\SecurityMiddleware;
 use Security\SecurityApp;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -46,6 +47,10 @@ class AuthenticateController extends ControllerBase
     public function refresh_token(Request $request)
     {
         $post = $request->request->all();
+        $head = $request->headers->all();
+
+        //
+
         $response = [];
 
         if(empty($post['refresh_token']))
@@ -65,11 +70,10 @@ class AuthenticateController extends ControllerBase
             }
         }
 
-        $token = SecurityApp::decodeRefreshJasonWebToken($post['refresh_token']);
+        $refresh_token = SecurityApp::decodeRefreshJasonWebToken($post['refresh_token']);
 
-        $response['access_token'] = SecurityApp::encodeJasonWebToken(['user' => $token['user']]);
-        $response['refresh_token'] = SecurityApp::encodeRefreshToken($response['access_token'],['user' => $token['user']]);
-
+        $response['access_token'] = SecurityApp::encodeJasonWebToken(['user' => $refresh_token['user']]);
+        $response['refresh_token'] = SecurityApp::encodeRefreshToken($response['access_token'],['user' => $refresh_token['user']]);
 
         return $this->jsonResponse($response);
     }

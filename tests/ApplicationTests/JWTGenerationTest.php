@@ -8,30 +8,52 @@
 
 namespace Test\ApplicationTests;
 
-
 use Security\SecurityApp;
+use Test\BaseWebTest;
 
-class JWTGenerationTest extends \PHPUnit\Framework\TestCase
+class JWTGenerationTest extends BaseWebTest
 {
 
-    public function testJWT()
+    public function testGenerateToken()
     {
-        $token = SecurityApp::encodeJasonWebToken(['foo'=>'bar']);
-        $result = SecurityApp::verifyJasonWebToken($token);
+        $token = SecurityApp::encodeJasonWebToken(['user' => 'foo']);
+        $refresh_token = SecurityApp::encodeRefreshToken($token,['user' => 'foo']);
 
-        $this->assertTrue($result);
+        $this->assertTrue(SecurityApp::verifyJasonWebToken($token));
 
-        $payload = SecurityApp::decodeJasonWebToken($token);
+        sleep(20);
 
-        $this->assertContains('bar',$payload);
+        $this->assertTrue(SecurityApp::verifyJasonWebToken($token));
+        $this->assertFalse(SecurityApp::verifyRefreshJasonWebToken($refresh_token));
+
+        sleep(10);
+
+        $this->assertFalse(SecurityApp::verifyJasonWebToken($token));
+        $this->assertTrue(SecurityApp::verifyRefreshJasonWebToken($refresh_token));
     }
 
-    public function testErrorJWT()
-    {
-        $token = SecurityApp::encodeJasonWebToken(['foo'=>'bar'],time() - 10);
-        $result = SecurityApp::verifyJasonWebToken($token);
 
-        $this->assertFalse($result);
-        $this->assertTrue(SecurityApp::isExpiredToken($token));
-    }
+//
+//    public function testJWT()
+//    {
+//        $token = SecurityApp::encodeJasonWebToken(['foo'=>'bar']);
+//        $result = SecurityApp::verifyJasonWebToken($token);
+//
+//        $this->assertTrue($result);
+//
+//        $payload = SecurityApp::decodeJasonWebToken($token);
+//
+//        $this->assertContains('bar',$payload);
+//    }
+//
+//    public function testErrorJWT()
+//    {
+//        $token = SecurityApp::encodeJasonWebToken(['foo'=>'bar'],time() - 10);
+//        $result = SecurityApp::verifyJasonWebToken($token);
+//
+//        $this->assertFalse($result);
+//        $this->assertTrue(SecurityApp::isExpiredToken($token));
+//    }
+
+
 }

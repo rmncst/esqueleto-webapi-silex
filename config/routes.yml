@@ -11,6 +11,7 @@ routes:
         method: 'POST'
         path_uri: '/auth/refresh-token'
         action: 'controller.authenticate:refresh_token'
+
 routes_grouped:
     usuario:
         prefix: '/usuario'
