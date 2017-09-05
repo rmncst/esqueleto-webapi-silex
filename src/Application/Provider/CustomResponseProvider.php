@@ -16,8 +16,9 @@ use Application\Exception\FieldNotFoundException;
 use Application\Exception\InvalidTokenException;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
+use Test\BaseWebTest;
 
-class CustomResponseProvider implements ServiceProviderInterface
+class CustomResponseProvider extends BaseWebTest implements ServiceProviderInterface
 {
     public function register(Container $app)
     {
