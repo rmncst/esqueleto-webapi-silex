@@ -16,12 +16,22 @@ use Application\Exception\FieldNotFoundException;
 use Application\Exception\InvalidTokenException;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
+use Silex\Application;
 use Test\BaseWebTest;
 
-class CustomResponseProvider extends BaseWebTest implements ServiceProviderInterface
+class CustomResponseProvider implements ServiceProviderInterface
 {
     public function register(Container $app)
     {
+        if(!($app instanceof Application)) {
+            throw new \Exception('app variable is not instance off Sillex Application !');
+        }
+
+        $app->view(function (array $response) use($app) {
+            $jsonResponse = new JsonCustomResponse($response,null,JsonCustomResponse::STATUS_OK);
+            return $app->json($jsonResponse);
+        });
+
         $app->view(function (JsonCustomResponse $response) use($app){
             return $app->json($response);
         });

@@ -13,7 +13,7 @@ use Symfony\Component\HttpKernel\Client;
  * Date: 04/09/17
  * Time: 10:25
  */
-class BaseWebTest extends \PHPUnit\Framework\TestCase
+class BaseWebTest extends WebTestCase
 {
     public function createApplication()
     {

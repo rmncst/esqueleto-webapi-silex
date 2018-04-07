@@ -12,6 +12,7 @@
     },
     "require-dev": {
         "symfony/browser-kit": "^3.3",
-        "symfony/css-selector": "^3.3"
+        "symfony/css-selector": "^3.3",
+        "phpunit/phpunit": "5.5.*"
     }
 }

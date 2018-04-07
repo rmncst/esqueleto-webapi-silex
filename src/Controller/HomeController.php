@@ -15,7 +15,7 @@ class HomeController
 {
     public function index()
     {
-        return "Hellow World!";
+        return ["Hello World!"];
     }
 
     public function json()

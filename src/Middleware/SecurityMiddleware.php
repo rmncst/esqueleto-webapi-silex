@@ -8,8 +8,6 @@
 
 namespace Middleware;
 
-
-use Application\CustomResponse\JsonCustomResponse;
 use Application\Exception\AccessTokenNotFoundException;
 use Application\Exception\ExpiredAccessTokenException;
 use Application\Exception\InvalidTokenException;

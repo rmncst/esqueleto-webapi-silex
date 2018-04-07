@@ -5,7 +5,7 @@ routes:
         action: 'controller.home:index'
     sign-up:
         method: 'POST'
-        path_uri: '/auth/sign-up'
+        path_uri: '/auth/sign-in'
         action: 'controller.authenticate:auth'
     refresh-token:
         method: 'POST'
